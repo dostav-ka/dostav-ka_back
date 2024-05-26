@@ -33,3 +33,13 @@ class ManagerRegistrationMediator:
             form.get('middle_name'), form.get('phone'), form.get('password')
         )
         return ManagerService.create(manager_data)
+
+
+class ManagerCreateMediator:
+    @staticmethod
+    def execute(request, form):
+        manager_data = ManagerDataClass(
+            form.get('email'), form.get('first_name'), form.get('last_name'),
+            form.get('middle_name'), form.get('phone'), form.get('password')
+        )
+        return ManagerService.create(manager_data)
