@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Регистрация</title>
+<title>Вход</title>
 <style>
 body {
     font-family: Arial, sans-serif;
@@ -72,7 +72,7 @@ h2 {
 
 <div class="container">
     <div class="card">
-        <h2>Регистрация</h2>
+        <h2>Вход</h2>
         <form method="post">
             {% csrf_token %}
             {% if form_errors %}
@@ -87,27 +87,12 @@ h2 {
             </div>
             {% endif %}
             <div class="input-group">
-                <input type="text" name="first_name" placeholder="Имя" required>
-            </div>
-            <div class="input-group">
-                <input type="text" name="last_name" placeholder="Фамилия" required>
-            </div>
-            <div class="input-group">
-                <input type="text" name="middle_name" placeholder="Отчество" required>
-            </div>
-            <div class="input-group">
                 <input type="email" name="email" placeholder="Email" required>
-            </div>
-            <div class="input-group">
-                <input type="tel" name="phone" placeholder="Номер телефона" required>
             </div>
             <div class="input-group">
                 <input type="password" name="password" placeholder="Пароль" required>
             </div>
-            <div class="input-group">
-                <input type="password" name="confirm_password" placeholder="Подтверждение пароля" required>
-            </div>
-            <button type="submit" class="btn">Зарегистрироваться</button>
+            <button type="submit" class="btn">Войти</button>
         </form>
     </div>
 </div>

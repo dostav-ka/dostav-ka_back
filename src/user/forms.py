@@ -31,3 +31,27 @@ class ManagerRegistrationForm(forms.ModelForm):
 
         return cleaned_data
 
+
+class ManagerLoginForm(forms.Form):
+    email = forms.EmailField()
+    password = forms.CharField()
+
+    class Meta:
+        model = Manager
+        fields = ['email', 'password']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        print(cleaned_data)
+        email = cleaned_data.get('email')
+        if email:
+            if not User.objects.filter(email=email).exists():
+                raise forms.ValidationError("Пользователь с таким email не существует.")
+        else:
+            raise forms.ValidationError("Поле email обязательно для заполнения.")
+
+        password = cleaned_data.get('password')
+        if not password:
+            raise forms.ValidationError("Поле пароля обязательны для заполнения.")
+
+        return cleaned_data
