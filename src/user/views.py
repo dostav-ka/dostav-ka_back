@@ -2,8 +2,10 @@ from django.contrib.auth import authenticate, login
 from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.shortcuts import render, get_object_or_404
 
 from .forms import ManagerRegistrationForm, ManagerLoginForm, CourierCreateForm
+from .models import Courier
 from .services.courier_service import CourierCreateMediator
 from .services.manager_service import ManagerRegistrationMediator, ManagerCreateMediator
 
@@ -95,3 +97,14 @@ class CourierCreateView(TemplateView):
 
 class PersonalAccountView(TemplateView):
     template_name = 'user/manager/personal_account.html'
+
+
+class CourierView(TemplateView):
+    template_name = 'user/courier/personal.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        courier_id = self.kwargs['id']
+        courier = get_object_or_404(Courier, id=courier_id)
+        context['courier'] = courier
+        return context
