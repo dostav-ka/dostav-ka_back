@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from ..models import User, Courier
-from delivery.models import Business
+from delivery.models import Business, Order
 
 
 @dataclass
@@ -15,15 +15,21 @@ class CourierDataClass:
 
 
 class CourierService:
+    def __init__(self, courier):
+        self.courier = courier
+
+    def get_orders(self):
+        return Order.objects.filter(courier=self.courier).order_by('-created_date')[:5]
+
     @staticmethod
     def create(courier_data: CourierDataClass):
         user = User.objects.create_mock_user(email=courier_data.email)
-        manager = Courier.objects.create(
+        courier = Courier.objects.create(
             user=user, phone=courier_data.phone,
             first_name=courier_data.first_name, last_name=courier_data.last_name,
             middle_name=courier_data.middle_name, business=courier_data.business
         )
-        return manager
+        return courier
 
 
 class CourierCreateMediator:

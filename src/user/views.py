@@ -10,8 +10,9 @@ from rest_framework.response import Response
 from .forms import ManagerRegistrationForm, ManagerLoginForm, CourierCreateForm
 from .models import Courier, Manager
 from .serializers import CourierTGSerializer
-from .services.courier_service import CourierCreateMediator
+from .services.courier_service import CourierCreateMediator, CourierService
 from .services.manager_service import ManagerRegistrationMediator, ManagerCreateMediator
+from delivery.serializers import OrderSerializer
 
 
 class ManagerRegistrationView(TemplateView):
@@ -141,3 +142,14 @@ class CourierConfirmTGView(APIView):
         courier.save(update_fields=['telegram_id'])
 
         return Response("OK", status=status.HTTP_200_OK)
+
+
+class CourierOrdersView(APIView):
+    def get(self, request, *args, **kwargs):
+        tg_id = request.query_params.get('tg_id')
+        if tg_id is None:
+            return Response({"detail": "tg_id parameter is required."}, status=400)
+
+        courier = get_object_or_404(Courier, telegram_id=tg_id)
+        orders = CourierService(courier).get_orders()
+        return Response(OrderSerializer(orders, many=True).data, status=status.HTTP_200_OK)

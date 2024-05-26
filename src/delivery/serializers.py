@@ -26,13 +26,15 @@ class OrderSerializer(serializers.ModelSerializer):
     product = ProductSerializer()
     address = AddressSerializer()
     client = ClientSerializer()
+    tg_id = serializers.CharField(source='courier.telegram_id')
 
     class Meta:
         model = Order
         fields = [
-            'product', 'address', 'client', 'expected_delivery_time',
-            'payment_upon_receipt', 'delivery_cost', 'total_cost'
+            'id', 'product', 'address', 'client', 'expected_delivery_time',
+            'payment_upon_receipt', 'delivery_cost', 'total_cost', 'tg_id'
         ]
+        read_only_fields = ['id', 'tg_id']
 
 
 class OrderStatusSerializer(serializers.Serializer):
