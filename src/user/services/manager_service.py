@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from ..models import User, Manager
+from delivery.models import Business
 
 
 @dataclass
@@ -11,6 +12,7 @@ class ManagerDataClass:
     middle_name: str
     phone: str
     password: str
+    business: Business
 
 
 class ManagerService:
@@ -20,7 +22,7 @@ class ManagerService:
         manager = Manager.objects.create(
             user=user, phone=manager_data.phone,
             first_name=manager_data.first_name, last_name=manager_data.last_name,
-            middle_name=manager_data.middle_name
+            middle_name=manager_data.middle_name, business=manager_data.business
         )
         return manager
 
@@ -38,8 +40,9 @@ class ManagerRegistrationMediator:
 class ManagerCreateMediator:
     @staticmethod
     def execute(request, form):
+        business = request.user.manager.business
         manager_data = ManagerDataClass(
             form.get('email'), form.get('first_name'), form.get('last_name'),
-            form.get('middle_name'), form.get('phone'), form.get('password')
+            form.get('middle_name'), form.get('phone'), form.get('password'), business
         )
         return ManagerService.create(manager_data)

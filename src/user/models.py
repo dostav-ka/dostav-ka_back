@@ -3,6 +3,7 @@ from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 
 from .managers import UserManager
+from delivery.models import Business
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -23,9 +24,12 @@ class Manager(models.Model):
     last_name = models.CharField(max_length=100)
     middle_name = models.CharField(max_length=100, null=True, blank=True)
     phone = models.CharField(max_length=15)
+    business = models.ForeignKey(
+        Business, on_delete=models.CASCADE, related_name='managers', null=True, blank=True
+    )
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name} {self.middle_name}'
+        return f'{self.business}: {self.first_name} {self.last_name} {self.middle_name}'
 
 
 class Courier(models.Model):
@@ -35,9 +39,12 @@ class Courier(models.Model):
     middle_name = models.CharField(max_length=100, null=True, blank=True)
     phone = models.CharField(max_length=15)
     telegram_id = models.CharField(max_length=100, null=True, blank=True)
+    business = models.ForeignKey(
+        Business, on_delete=models.CASCADE, related_name='couriers'
+    )
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name} {self.middle_name}'
+        return f'{self.business}: {self.first_name} {self.last_name} {self.middle_name}'
 
 
 class Client(models.Model):
