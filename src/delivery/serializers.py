@@ -33,3 +33,8 @@ class OrderSerializer(serializers.ModelSerializer):
             'product', 'address', 'client', 'expected_delivery_time',
             'payment_upon_receipt', 'delivery_cost', 'total_cost'
         ]
+
+
+class OrderStatusSerializer(serializers.Serializer):
+    tg_id = serializers.CharField(required=True)
+    status = serializers.CharField(required=True)
