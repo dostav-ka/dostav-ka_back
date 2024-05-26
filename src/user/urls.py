@@ -1,7 +1,8 @@
 from django.urls import path
 
 from .views import (
-    ManagerRegistrationView, PersonalAccountView, ManagerLoginView, ManagerCreateView,
+    ManagerRegistrationView, PersonalAccountView, ManagerLoginView,
+    ManagerCreateView, ManagerView,
     CourierCreateView, CourierView
 )
 
@@ -10,6 +11,7 @@ urlpatterns = [
     path('registration', ManagerRegistrationView.as_view(), name='registration'),
     path('login', ManagerLoginView.as_view(), name='login'),
     path('manager/create', ManagerCreateView.as_view(), name='create_manager'),
+    path('manager/<int:id>', ManagerView.as_view(), name='manager'),
     path('courier/create', CourierCreateView.as_view(), name='create_courier'),
     path('courier/<int:id>', CourierView.as_view(), name='courier'),
 ]

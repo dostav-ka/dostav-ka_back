@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404
 
 from .forms import ManagerRegistrationForm, ManagerLoginForm, CourierCreateForm
-from .models import Courier
+from .models import Courier, Manager
 from .services.courier_service import CourierCreateMediator
 from .services.manager_service import ManagerRegistrationMediator, ManagerCreateMediator
 
@@ -107,4 +107,15 @@ class CourierView(TemplateView):
         courier_id = self.kwargs['id']
         courier = get_object_or_404(Courier, id=courier_id)
         context['courier'] = courier
+        return context
+
+
+class ManagerView(TemplateView):
+    template_name = 'user/manager/personal.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        manager_id = self.kwargs['id']
+        manager = get_object_or_404(Manager, id=manager_id)
+        context['manager'] = manager
         return context
