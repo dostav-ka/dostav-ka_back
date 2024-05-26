@@ -3,9 +3,13 @@ from django.views.generic import TemplateView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from .forms import ManagerRegistrationForm, ManagerLoginForm, CourierCreateForm
 from .models import Courier, Manager
+from .serializers import CourierTGSerializer
 from .services.courier_service import CourierCreateMediator
 from .services.manager_service import ManagerRegistrationMediator, ManagerCreateMediator
 
@@ -119,3 +123,21 @@ class ManagerView(TemplateView):
         manager = get_object_or_404(Manager, id=manager_id)
         context['manager'] = manager
         return context
+
+
+class CourierConfirmTGView(APIView):
+    def post(self, request, *args, **kwargs):
+        courier_id = self.kwargs['id']
+        courier = get_object_or_404(Courier, id=courier_id)
+        if courier.telegram_id:
+            return Response("Already confirmed", status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = CourierTGSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        tg_id = serializer.validated_data['tg_id']
+        courier.telegram_id = tg_id
+        courier.save(update_fields=['telegram_id'])
+
+        return Response("OK", status=status.HTTP_200_OK)

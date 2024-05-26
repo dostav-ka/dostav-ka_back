@@ -3,7 +3,7 @@ from django.urls import path
 from .views import (
     ManagerRegistrationView, PersonalAccountView, ManagerLoginView,
     ManagerCreateView, ManagerView,
-    CourierCreateView, CourierView
+    CourierCreateView, CourierView, CourierConfirmTGView
 )
 
 urlpatterns = [
@@ -14,4 +14,5 @@ urlpatterns = [
     path('manager/<int:id>', ManagerView.as_view(), name='manager'),
     path('courier/create', CourierCreateView.as_view(), name='create_courier'),
     path('courier/<int:id>', CourierView.as_view(), name='courier'),
+    path('courier/<int:id>/confirm', CourierConfirmTGView.as_view(), name='courier_confirm_tg'),
 ]
