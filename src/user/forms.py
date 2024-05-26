@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Manager, User
+from .models import Manager, User, Courier
 
 
 class ManagerRegistrationForm(forms.ModelForm):
@@ -53,5 +53,24 @@ class ManagerLoginForm(forms.Form):
         password = cleaned_data.get('password')
         if not password:
             raise forms.ValidationError("Поле пароля обязательны для заполнения.")
+
+        return cleaned_data
+
+
+class CourierCreateForm(forms.ModelForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = Courier
+        fields = ['email', 'first_name', 'last_name', 'middle_name', 'phone']
+
+    def clean(self):
+        cleaned_data = super().clean()
+        email = cleaned_data.get('email')
+        if email:
+            if User.objects.filter(email=email).exists():
+                raise forms.ValidationError("Пользователь с таким email уже существует.")
+        else:
+            raise forms.ValidationError("Поле email обязательно для заполнения.")
 
         return cleaned_data
