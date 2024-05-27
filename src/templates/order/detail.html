@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Менеджер</title>
+    <title>Заказ</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -51,13 +51,16 @@
 <body>
     <div class="container">
         <div class="card">
-            <h2>Менеджер</h2>
+            <h2>Заказ</h2>
             <div class="info">
-                <p>Email: {{ manager.user.email }}</p>
-                <p>Имя: {{ manager.first_name }}</p>
-                <p>Фамилия: {{ manager.last_name }}</p>
-                <p>Телефон: {{ manager.phone }}</p>
-                <p>Бизнес: {{ manager.business.name }}</p>
+                <p>Продукт: {{ order.product }}</p>
+                <p>Клиент: {{ order.client }}</p>
+                <p>Ожидаемое время доставки: {{ order.expected_delivery_time }}</p>
+                <p>Статус: {{ order.status }}</p>
+                <p>Адрес: {{ order.address }}</p>
+                <p>Оплата при получении: {{ order.payment_upon_receipt }}</p>
+                <p>Стоимость доставки: {{ order.delivery_cost }}</p>
+                <p>Итоговая стоимость: {{ order.total_cost }}</p>
             </div>
         </div>
     </div>

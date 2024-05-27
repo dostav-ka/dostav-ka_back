@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -7,6 +8,7 @@ from rest_framework.exceptions import ValidationError
 from .models import Order, Product, Address, Business
 from .serializers import OrderSerializer, ProductSerializer, AddressSerializer, ClientSerializer, OrderStatusSerializer
 from user.models import Client
+from user.services.manager_service import ManagerService
 
 
 class OrderCreateView(APIView):
@@ -81,3 +83,24 @@ class OrderStatusView(APIView):
         order.save(update_fields=['status'])
 
         return Response("OK", status=status.HTTP_200_OK)
+
+
+class OrderView(TemplateView):
+    template_name = 'order/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order_id = self.kwargs['id']
+        order = get_object_or_404(Order, id=order_id)
+        context['order'] = order
+        context['couriers'] = ManagerService(self.request.user.manager).get_couriers()
+        return context
+
+
+class OrderListView(TemplateView):
+    template_name = 'order/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['orders'] = ManagerService(self.request.user.manager).get_orders()
+        return context
