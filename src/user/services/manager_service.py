@@ -25,6 +25,9 @@ class ManagerService:
     def get_couriers(self):
         return Courier.objects.filter(business=self.manager.business)
 
+    def get_managers(self):
+        return Manager.objects.filter(business=self.manager.business)
+
     @staticmethod
     def create(manager_data: ManagerDataClass):
         user = User.objects.create_user(email=manager_data.email, password=manager_data.password)

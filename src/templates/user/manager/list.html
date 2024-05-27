@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Курьеры</title>
+    <title>Менеджеры</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -61,10 +60,10 @@
 <body>
     <div class="container">
         <div class="card">
-            <h1>Курьеры</h1>
-            {% for courier in couriers %}
+            <h1>Менеджеры</h1>
+            {% for manager in managers %}
                 <div class="courier">
-                    <a href="{% url 'user:courier' courier.id %}">{{ courier }}</a>
+                    <a href="{% url 'user:manager' manager.id %}">{{ manager }}</a>
                 </div>
             {% endfor %}
         </div>

@@ -134,6 +134,15 @@ class ManagerView(TemplateView):
         return context
 
 
+class ManagerListView(TemplateView):
+    template_name = 'user/manager/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['managers'] = ManagerService(self.request.user.manager).get_managers()
+        return context
+
+
 class CourierConfirmTGView(APIView):
     def post(self, request, *args, **kwargs):
         courier_id = self.kwargs['id']
