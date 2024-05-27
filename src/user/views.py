@@ -11,7 +11,7 @@ from .forms import ManagerRegistrationForm, ManagerLoginForm, CourierCreateForm
 from .models import Courier, Manager
 from .serializers import CourierTGSerializer
 from .services.courier_service import CourierCreateMediator, CourierService
-from .services.manager_service import ManagerRegistrationMediator, ManagerCreateMediator
+from .services.manager_service import ManagerRegistrationMediator, ManagerCreateMediator, ManagerService
 from delivery.serializers import OrderSerializer
 
 
@@ -51,13 +51,11 @@ class ManagerLoginView(TemplateView):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             user = authenticate(request, username=email, password=password)
-            print(user)
             if user is not None:
                 login(request, user)
                 return redirect(self.success_url)
             else:
                 form.add_error(None, 'Некорректный пароль.')
-            print(form.errors)
 
         return self.render_to_response(self.get_context_data(form_errors=form.errors))
 
@@ -113,6 +111,15 @@ class CourierView(TemplateView):
         courier = get_object_or_404(Courier, id=courier_id)
         context['courier'] = courier
         context['orders'] = CourierService(courier).get_orders()
+        return context
+
+
+class CourierListView(TemplateView):
+    template_name = 'user/courier/list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['couriers'] = ManagerService(self.request.user.manager).get_couriers()
         return context
 
 

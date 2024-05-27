@@ -42,7 +42,6 @@ class ManagerLoginForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        print(cleaned_data)
         email = cleaned_data.get('email')
         if email:
             if not User.objects.filter(email=email).exists():
