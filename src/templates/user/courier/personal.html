@@ -1,28 +1,98 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Курьер</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: left;
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .courier-info, .orders {
+            flex: 1;
+        }
+
+        h2, h3 {
+            font-weight: bold;
+            color: #333333;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .info, .order {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+
+        p {
+            margin: 5px 0;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #cccccc;
+            margin: 10px 0;
+        }
+    </style>
 </head>
 <body>
-    <h1>Курьер</h1>
-    <p>Email: {{ courier.user.email }}</p>
-    <p>Имя: {{ courier.first_name }}</p>
-    <p>Фамилия: {{ courier.last_name }}</p>
-    <p>Телефон: {{ courier.phone }}</p>
-
-    <hr>
-    <h2>Заказы</h2>
-    {% for order in orders %}
-        <h3>Продукт: {{ order.product }}</h3>
-        <p>Клиент: {{ order.client }}</p>
-        <p>Ожидаемое время доставки: {{ order.expected_delivery_time }}</p>
-        <p>Статус: {{ order.status }}</p>
-        <p>Адрес: {{ order.address }}</p>
-        <p>Оплата при получении: {{ order.payment_upon_receipt }}</p>
-        <p>Стоимость доставки: {{ order.delivery_cost }}</p>
-        <p>Итоговая стоимость: {{ order.total_cost }}</p>
-    {% endfor %}
+    <div class="container">
+        <div class="card">
+            <div class="courier-info">
+                <h2>Курьер</h2>
+                <div class="info">
+                    <p>Email: {{ courier.user.email }}</p>
+                    <p>Имя: {{ courier.first_name }}</p>
+                    <p>Фамилия: {{ courier.last_name }}</p>
+                    <p>Телефон: {{ courier.phone }}</p>
+                </div>
+            </div>
+            <div class="orders">
+                <h2>Заказы</h2>
+                {% for order in orders %}
+                    <div class="order">
+                        <h3>Продукт: {{ order.product }}</h3>
+                        <p>Клиент: {{ order.client }}</p>
+                        <p>Ожидаемое время доставки: {{ order.expected_delivery_time }}</p>
+                        <p>Статус: {{ order.status }}</p>
+                        <p>Адрес: {{ order.address }}</p>
+                        <p>Оплата при получении: {{ order.payment_upon_receipt }}</p>
+                        <p>Стоимость доставки: {{ order.delivery_cost }}</p>
+                        <p>Итоговая стоимость: {{ order.total_cost }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </body>
 </html>
