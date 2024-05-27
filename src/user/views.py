@@ -112,6 +112,7 @@ class CourierView(TemplateView):
         courier_id = self.kwargs['id']
         courier = get_object_or_404(Courier, id=courier_id)
         context['courier'] = courier
+        context['orders'] = CourierService(courier).get_orders()
         return context
 
 

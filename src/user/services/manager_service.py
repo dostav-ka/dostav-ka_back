@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from ..models import User, Manager
-from delivery.models import Business
+from ..models import User, Manager, Courier
+from delivery.models import Business, Order
 
 
 @dataclass
@@ -16,6 +16,15 @@ class ManagerDataClass:
 
 
 class ManagerService:
+    def __init__(self, manager):
+        self.manager = manager
+
+    def get_orders(self):
+        return Order.objects.filter(business=self.manager.business).order_by('-created_date')[:5]
+
+    def get_couriers(self):
+        return Courier.objects.filter(business=self.manager.business)
+
     @staticmethod
     def create(manager_data: ManagerDataClass):
         user = User.objects.create_user(email=manager_data.email, password=manager_data.password)

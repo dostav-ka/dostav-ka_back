@@ -11,5 +11,18 @@
     <p>Имя: {{ courier.first_name }}</p>
     <p>Фамилия: {{ courier.last_name }}</p>
     <p>Телефон: {{ courier.phone }}</p>
+
+    <hr>
+    <h2>Заказы</h2>
+    {% for order in orders %}
+        <h3>Продукт: {{ order.product }}</h3>
+        <p>Клиент: {{ order.client }}</p>
+        <p>Ожидаемое время доставки: {{ order.expected_delivery_time }}</p>
+        <p>Статус: {{ order.status }}</p>
+        <p>Адрес: {{ order.address }}</p>
+        <p>Оплата при получении: {{ order.payment_upon_receipt }}</p>
+        <p>Стоимость доставки: {{ order.delivery_cost }}</p>
+        <p>Итоговая стоимость: {{ order.total_cost }}</p>
+    {% endfor %}
 </body>
 </html>
