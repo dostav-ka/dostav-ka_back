@@ -1,10 +1,12 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import ValidationError
 
+from .forms import AssignCourierForm
 from .models import Order, Product, Address, Business
 from .serializers import OrderSerializer, ProductSerializer, AddressSerializer, ClientSerializer, OrderStatusSerializer
 from user.models import Client
@@ -92,9 +94,24 @@ class OrderView(TemplateView):
         context = super().get_context_data(**kwargs)
         order_id = self.kwargs['id']
         order = get_object_or_404(Order, id=order_id)
+        form = AssignCourierForm()
+        context['form'] = form
         context['order'] = order
         context['couriers'] = ManagerService(self.request.user.manager).get_couriers()
         return context
+
+    def post(self, request, *args, **kwargs):
+        order_id = self.kwargs['id']
+        order = get_object_or_404(Order, id=order_id)
+        form = AssignCourierForm(request.POST)
+        if form.is_valid():
+            courier = form.cleaned_data['courier']
+            order.courier = courier
+            order.save()
+            return redirect(reverse('delivery:order-list'))
+        context = self.get_context_data(**kwargs)
+        context['form'] = form
+        return render(request, self.template_name, context)
 
 
 class OrderListView(TemplateView):
